@@ -33,7 +33,7 @@ def fetch_data_true(directory):
 		if time_check and result_check:
 			data.append([i, str(seconds), 'zaliczone'])
 		else:
-			data.append([i, str(seconds), 'zaliczone'])
+			data.append([i, str(seconds), 'niezaliczone'])
 
 	return data
 
