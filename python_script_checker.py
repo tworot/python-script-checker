@@ -24,6 +24,8 @@ def fetch_data(directory):
     files = os.listdir(full_directory)
     csv_data = open('test_data.csv')
     test_data = list(csv.reader(csv_data))
+    for val in test_data[1:]:
+        val[0] = val[0].replace(';', '\n')
     number_of_tests = str(len(test_data)-1)
 
     for file in files:
