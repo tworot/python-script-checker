@@ -8,7 +8,9 @@ def test_script(test_command_list, test_data):
 
     try:
         stdout, stderr = test_module.communicate(test_data[0].encode(), timeout=int(test_data[2]))
-        result = str(stdout.decode().strip())
+        result = str(stdout.decode())        
+        result = result.replace('\r', '')
+        result = result[:-1]
         if result == test_data[1]:
             test_result = (1, 0, 0)
         else:

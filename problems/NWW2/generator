@@ -1,0 +1,41 @@
+from random import randint
+import csv
+import subprocess
+import os
+
+header = ['Stdin', 'Stdout', 'Timeout']
+with open(os.getcwd() + '/problems/NWW2/test_data.csv', 'w', newline='', encoding="utf-8") as csv_file:
+	writer = csv.writer(csv_file)
+	writer.writerow(header)
+	timeout = "1"
+
+	counter = 3
+	for i in range(50,1000,50):
+		stdin = ""
+		stdout = ""
+		test_count = randint(10, i)
+		stdin = stdin + str(test_count) + "\n"
+		for j in range (test_count):
+			number_count = randint(1, min(counter, 9))
+			stdin = stdin + str(number_count + 1) + "\n"
+			for k in range(number_count):
+				stdin = stdin + str(randint(0, 1000000)) + " "
+			stdin = stdin + str(randint(0, 1000000)) + "\n"
+		stdin = stdin[:-1]
+		counter +=1
+		
+		location = ['python', os.getcwd() + "/problems/NWW2/nww2.py"]
+		test_module = subprocess.Popen(location, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		try:
+				stdout, stderr = test_module.communicate(stdin.encode(), timeout=int(timeout))
+				result = str(stdout.decode().strip())
+		except subprocess.TimeoutExpired:
+			test_result = (0, 0, 1)
+		finally:
+			test_module.kill()
+		stdin = stdin.replace('\r', '')
+		stdin = stdin.replace('\n', ';')
+		result = result.replace('\r', '')
+		result = result.replace('\n', ';')
+		writer.writerow((stdin, result, timeout))
+	

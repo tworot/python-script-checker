@@ -1,0 +1,37 @@
+from random import randint
+import csv
+import subprocess
+import os
+
+header = ['Stdin', 'Stdout', 'Timeout']
+with open(os.getcwd() + '/problems/NWD/test_data.csv', 'w', newline='', encoding="utf-8") as csv_file:
+	writer = csv.writer(csv_file)
+	writer.writerow(header)
+	timeout = "1"
+
+	for i in range(50,1000,50):
+		stdin = ""
+		stdout = ""
+		test_count = randint(10, i)
+		stdin = stdin + str(test_count) + "\n"
+		for j in range (test_count):
+			a = randint(0, 1000000)
+			b = randint(0, 1000000)
+			stdin = stdin + str(a) + " " + str(b) + "\n"
+		stdin = stdin[:-1]
+		
+		location = ['python', os.getcwd() + "/problems/NWD/nwd.py"]
+		test_module = subprocess.Popen(location, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		try:
+				stdout, stderr = test_module.communicate(stdin.encode(), timeout=int(timeout))
+				result = str(stdout.decode().strip())
+		except subprocess.TimeoutExpired:
+			test_result = (0, 0, 1)
+		finally:
+			test_module.kill()
+		stdin = stdin.replace('\r', '')
+		stdin = stdin.replace('\n', ';')
+		result = result.replace('\r', '')
+		result = result.replace('\n', ';')
+		writer.writerow((stdin, result, timeout))
+	
