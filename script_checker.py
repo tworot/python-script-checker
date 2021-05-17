@@ -11,6 +11,8 @@ def test_script(test_command_list, test_data):
         result = str(stdout.decode())        
         result = result.replace('\r', '')
         result = result[:-1]
+        print(result)
+        print(test_data[1])
         if result == test_data[1]:
             test_result = (1, 0, 0)
         else:

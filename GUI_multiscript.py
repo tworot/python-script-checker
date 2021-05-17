@@ -37,6 +37,7 @@ def fetch_data(directory):
         test_command = ['python', full_directory + "/" + file]
 
         for test in test_data[1:]:
+            print(test)
             test_results_list.append(
                 script_checker.test_script(test_command, test)
             )
